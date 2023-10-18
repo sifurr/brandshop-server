@@ -27,14 +27,41 @@ async function run() {
     await client.connect();
     // database and collection
     const productCollection = client.db("brandShopDB").collection("productCollection");
+    const brandCollection = client.db("brandShopDB").collection("brandCollection");
+    
+    /// API for Brands
+    // get api - for all the brands
+    app.get('/brands', async (req, res)=>{
+        const cursor = brandCollection.find();
+        const result = await cursor.toArray();
+        res.send(result);
+    })
 
-    //APIs
+    // post api - for a brand
+    app.post('/brands', async (req, res)=>{
+        const receivedBrandInfo = req.body;
+        const result = await brandCollection.insertOne(receivedBrandInfo);
+        res.send(result);
+    })
+
+    // API for Products
+    // get api - for all the products
+    app.get('/products', async (req, res)=>{
+        const cursor = productCollection.find();
+        const result = await cursor.toArray();
+        res.send(result);
+    })
+
     // post api - for a single product
     app.post('/products', async (req, res)=>{
         const receivedProductInfo = req.body;
         const result = await productCollection.insertOne(receivedProductInfo);
         res.send(result);
     })
+
+  
+
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
