@@ -74,13 +74,6 @@ async function run() {
       res.send(result);
     });
 
-    // post api - for a product id for the cart
-    app.post("/carts", async (req, res) => {
-      const receivedProductId = req.body;
-      const idAsResult = await cartCollection.insertOne(receivedProductId);
-      res.send(idAsResult);
-    });
-
     // put api - for a single product
     app.put("/products/:id", async (req, res) => {
       const id = req.params.id;
@@ -103,6 +96,30 @@ async function run() {
         updatedInfo,
         options
       );
+      res.send(result);
+    });
+
+
+      // delete api - for a single product
+      app.delete('/products/:id', async (req, res)=>{
+        const id = req.params.id;
+        const query = {_id: new ObjectId(id)};
+        const result = await productCollection.deleteOne(query);
+        res.send(result);
+    })
+
+    // API for Carts
+    // get api - for a product id for the cart
+    app.get("/carts", async (req, res) => {
+      const cursor = cartCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
+    // post api - for a product id for the cart
+    app.post("/carts", async (req, res) => {
+      const receivedProductId = req.body;
+      const result = await cartCollection.insertOne(receivedProductId);
       res.send(result);
     });
 
