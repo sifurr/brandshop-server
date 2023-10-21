@@ -35,7 +35,9 @@ async function run() {
     const teamCollection = client
       .db("brandShopDB")
       .collection("teamCollection");
-      
+    const cartCollection = client
+      .db("brandShopDB")
+      .collection("cartCollection");
 
     /// API for Brands
     // get api - for all the brands
@@ -100,6 +102,22 @@ async function run() {
       res.send(result);
     });
 
+    // update/patch api
+    app.patch("/products/:id", async (req, res) => {
+      // const requestForCart = req.body;
+      const id = req.params.id;
+      const requestForCart = req.body;
+      // const filter = { _id: new ObjectId(requestForCart._id) };
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          cartRequest: requestForCart.cartRequest,
+        },
+      };
+      const result = await productCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
+
     // delete api - for a single product
     app.delete("/products/:id", async (req, res) => {
       const id = req.params.id;
@@ -121,18 +139,41 @@ async function run() {
       const receivedProductId = req.body;
       const result = await cartCollection.insertOne(receivedProductId);
       res.send(result);
-    });  
+    });
 
+    //API for Users
+    // get api - for all users
+    // app.get("/users", async (req, res) => {
+    //   const cursor = userCollection.find();
+    //   const result = await cursor.toArray();
+    //   res.send(result);
+    // });
 
-    //APIs for Team 
-    // get api - for team
+    // // post api - for a single user
+    // app.post("/user", async (req, res) => {
+    //   const user = req.body;
+    //   const result = await userCollection.insertOne(user);
+    //   res.send(result);
+    // });
+
+    // // delete api
+    // app.delete("/users/:id", async (req, res) => {
+    //   const id = req.params.id;
+    //   const query = { _id: new ObjectId(id) };
+    //   const result = await userCollection.deleteOne(query);
+    //   res.send(result);
+    // });
+
+    //APIs for Team
+    //API for Users
+    // get api - for all users
     app.get("/team", async (req, res) => {
       const cursor = teamCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
 
-    // post api  - for team
+    // post api - for a single user
     app.post("/team", async (req, res) => {
       const team = req.body;
       const result = await teamCollection.insertOne(team);
