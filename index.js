@@ -32,6 +32,9 @@ async function run() {
     const brandCollection = client
       .db("brandShopDB")
       .collection("brandCollection");
+    const teamCollection = client
+      .db("brandShopDB")
+      .collection("teamCollection");
       
 
     /// API for Brands
@@ -140,6 +143,23 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await userCollection.deleteOne(query);
+      res.send(result);
+    });
+
+
+    //APIs for Team 
+    //API for Users
+    // get api - for all users
+    app.get("/team", async (req, res) => {
+      const cursor = teamCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    // post api - for a single user
+    app.post("/team", async (req, res) => {
+      const team = req.body;
+      const result = await teamCollection.insertOne(team);
       res.send(result);
     });
 
