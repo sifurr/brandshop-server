@@ -128,6 +128,13 @@ async function run() {
 
     // API for Carts
     // get api - for a product id for the cart
+    app.get("/carts/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await cartCollection.findOne(query);
+      res.send(result);
+    });
+
     app.get("/carts", async (req, res) => {
       const cursor = cartCollection.find();
       const result = await cursor.toArray();
@@ -141,31 +148,8 @@ async function run() {
       res.send(result);
     });
 
-    //API for Users
-    // get api - for all users
-    // app.get("/users", async (req, res) => {
-    //   const cursor = userCollection.find();
-    //   const result = await cursor.toArray();
-    //   res.send(result);
-    // });
-
-    // // post api - for a single user
-    // app.post("/user", async (req, res) => {
-    //   const user = req.body;
-    //   const result = await userCollection.insertOne(user);
-    //   res.send(result);
-    // });
-
-    // // delete api
-    // app.delete("/users/:id", async (req, res) => {
-    //   const id = req.params.id;
-    //   const query = { _id: new ObjectId(id) };
-    //   const result = await userCollection.deleteOne(query);
-    //   res.send(result);
-    // });
 
     //APIs for Team
-    //API for Users
     // get api - for all users
     app.get("/team", async (req, res) => {
       const cursor = teamCollection.find();
