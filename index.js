@@ -121,42 +121,18 @@ async function run() {
       const receivedProductId = req.body;
       const result = await cartCollection.insertOne(receivedProductId);
       res.send(result);
-    });
-
-    //API for Users
-    // get api - for all users
-    app.get("/users", async (req, res) => {
-      const cursor = userCollection.find();
-      const result = await cursor.toArray();
-      res.send(result);
-    });
-
-    // post api - for a single user
-    app.post("/user", async (req, res) => {
-      const user = req.body;
-      const result = await userCollection.insertOne(user);
-      res.send(result);
-    });
-
-    // delete api
-    app.delete("/users/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) };
-      const result = await userCollection.deleteOne(query);
-      res.send(result);
-    });
+    });  
 
 
     //APIs for Team 
-    //API for Users
-    // get api - for all users
+    // get api - for team
     app.get("/team", async (req, res) => {
       const cursor = teamCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
 
-    // post api - for a single user
+    // post api  - for team
     app.post("/team", async (req, res) => {
       const team = req.body;
       const result = await teamCollection.insertOne(team);
